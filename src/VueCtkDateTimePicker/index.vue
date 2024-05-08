@@ -71,6 +71,7 @@
       :no-keyboard="noKeyboard"
       :right="right"
       :behaviour="_behaviour"
+      :seconds-format="secondsFormat"
       @validate="validate"
       @close="closePicker"
     />
@@ -193,6 +194,9 @@ export default {
     isDisabled () {
       return typeof this.$attrs.disabled !== 'undefined' && this.$attrs.disabled !== false
     },
+    secondsFormat () {
+      return this.useSeconds ? ':ss' : null
+    },
     /**
      * Returns the behaviour object with the overrided values
      * @function _behaviour
@@ -230,7 +234,7 @@ export default {
         this.setValueToCustomElem()
       }
     }
-    if (this.format === 'YYYY-MM-DD hh:mm:ss a' && this.onlyTime) {
+    if (this.format === 'YYYY-MM-DD hh:mm a' && this.onlyTime) {
       console.warn(`A (time) format must be indicated/ (Ex : format="HH:mm")`)
     }
   },
@@ -295,16 +299,16 @@ export default {
     getDateTimeToSend (value) {
       const dateTime = typeof value !== 'undefined' ? value : this.value
       const dateToSend = dateTime
-        ? moment(dateTime, 'YYYY-MM-DD HH:mm:ss')
+        ? moment(dateTime, `YYYY-MM-DD HH:mm${this.secondsFormat ? this.secondsFormat : ''}`)
         : null
-      const dateTimeToSend = dateToSend ? nearestMinutes(this.minuteInterval, moment(dateToSend), 'YYYY-MM-DD HH:mm:ss').format(this.formatOutput) : null
+      const dateTimeToSend = dateToSend ? nearestMinutes(this.minuteInterval, moment(dateToSend), `YYYY-MM-DD HH:mm${this.secondsFormat ? this.secondsFormat : ''}`).format(this.formatOutput) : null
       return dateTimeToSend
     },
     getDateTime () {
       const date = this.value
         ? moment(this.value, this.formatOutput)
         : null
-      return date ? nearestMinutes(this.minuteInterval, date, this.formatOutput).format('YYYY-MM-DD HH:mm:ss') : null
+      return date ? nearestMinutes(this.minuteInterval, date, this.formatOutput).format(`YYYY-MM-DD HH:mm${this.secondsFormat ? this.secondsFormat : ''}`) : null
     },
     /**
      * Closes the datepicker

@@ -118,7 +118,8 @@ export default {
     disabledHours: { type: Array, default: () => ([]) },
     minTime: { type: String, default: null },
     behaviour: { type: Object, default: () => ({}) },
-    maxTime: { type: String, default: null }
+    maxTime: { type: String, default: null },
+    secondsFormat: { type: String, default: null }
   },
   data () {
     return {
@@ -175,7 +176,7 @@ export default {
       return [
         { type: 'hours', items: this.hours },
         { type: 'minutes', items: this.minutes },
-        { type: 'seconds', items: this.seconds },
+        ...(this.secondsFormat ? [{ type: 'seconds', items: this.seconds }] : []),
         ...(this.apms ? [{ type: 'apms', items: this.apms }] : [])
       ]
     },
@@ -185,16 +186,16 @@ export default {
       if (this.minTime) {
         minEnabledHour = this.isTwelveFormat
           ? this.minTime.toUpperCase().includes('AM')
-            ? moment(this.minTime, 'h:mm:ss a').format('h')
-            : parseInt(moment(this.minTime, 'h:mm:ss a').format('h')) + 12
-          : moment(this.minTime, 'HH:mm:ss').format('HH')
+            ? moment(this.minTime, `h:mm${this.secondsFormat ? this.secondsFormat : ''} a`).format('h')
+            : parseInt(moment(this.minTime, `h:mm${this.secondsFormat ? this.secondsFormat : ''} a`).format('h')) + 12
+          : moment(this.minTime, `HH:mm${this.secondsFormat ? this.secondsFormat : ''}`).format('HH')
       }
       if (this.maxTime) {
         maxEnabledHour = this.isTwelveFormat
           ? this.maxTime.toUpperCase().includes('AM')
-            ? moment(this.maxTime, 'h:mm a').format('h')
-            : parseInt(moment(this.maxTime, 'h:mm:ss a').format('h'), 10) + 12
-          : moment(this.maxTime, 'HH:mm:ss').format('HH')
+            ? moment(this.maxTime, `h:mm${this.secondsFormat ? this.secondsFormat : ''} a`).format('h')
+            : parseInt(moment(this.maxTime, `h:mm${this.secondsFormat ? this.secondsFormat : ''} a`).format('h'), 10) + 12
+          : moment(this.maxTime, `HH:mm${this.secondsFormat ? this.secondsFormat : ''}`).format('HH')
       }
 
       // In case if hour present as 08, 09, etc
@@ -227,22 +228,22 @@ export default {
       let maxEnabledMinute = 60
       if (this.isTwelveFormat) {
         if (this.minTime && this.apm) {
-          const minTime = moment(this.minTime, 'h:mm:ss a')
+          const minTime = moment(this.minTime, `h:mm${this.secondsFormat ? this.secondsFormat : ''} a`)
           const minTimeHour = parseInt(minTime.format('h'), 10) + (this.apm.toUpperCase() === 'PM' ? 12 : 0)
           minEnabledMinute = minTimeHour === this.hour ? parseInt(minTime.format('mm'), 10) : minEnabledMinute
         } else if (this.maxTime) {
-          const maxTime = moment(this.maxTime, 'h:mm:ss a')
+          const maxTime = moment(this.maxTime, `h:mm${this.secondsFormat ? this.secondsFormat : ''} a`)
           const maxTimeHour = parseInt(maxTime.format('h'), 10) + (this.apm.toUpperCase() === 'PM' ? 12 : 0)
           maxEnabledMinute = maxTimeHour === this.hour ? parseInt(maxTime.format('mm'), 10) : maxEnabledMinute
         }
       } else {
         if (this.minTime) {
-          const minTime = moment(this.minTime, 'HH:mm:ss')
-          const minTimeHour = parseInt(moment(this.minTime, 'HH:mm').format('HH'), 10)
+          const minTime = moment(this.minTime, `HH:mm${this.secondsFormat ? this.secondsFormat : ''}`)
+          const minTimeHour = parseInt(moment(this.minTime, `HH:mm${this.secondsFormat ? this.secondsFormat : ''}`).format('HH'), 10)
           minEnabledMinute = minTimeHour === this.hour ? parseInt(minTime.format('mm'), 10) : minEnabledMinute
         } else if (this.maxTime) {
-          const maxTime = moment(this.maxTime, 'HH:mm:ss')
-          const maxTimeHour = parseInt(moment(this.maxTime, 'HH:mm').format('HH'), 10)
+          const maxTime = moment(this.maxTime, `HH:mm${this.secondsFormat ? this.secondsFormat : ''}`)
+          const maxTimeHour = parseInt(moment(this.maxTime, `HH:mm${this.secondsFormat ? this.secondsFormat : ''}`).format('HH'), 10)
           maxEnabledMinute = maxTimeHour === this.hour ? parseInt(maxTime.format('mm'), 10) : maxEnabledMinute
         }
       }
@@ -270,22 +271,22 @@ export default {
       let maxEnabledSecond = 60
       if (this.isTwelveFormat) {
         if (this.minTime && this.apm) {
-          const minTime = moment(this.minTime, 'h:mm:ss a')
+          const minTime = moment(this.minTime, `h:mm${this.secondsFormat ? this.secondsFormat : ''} a`)
           const minTimeHour = parseInt(minTime.format('h'), 10) + (this.apm.toUpperCase() === 'PM' ? 12 : 0)
           minEnabledSecond = minTimeHour === this.hour ? parseInt(minTime.format('ss'), 10) : minEnabledSecond
         } else if (this.maxTime) {
-          const maxTime = moment(this.maxTime, 'h:mm:ss a')
+          const maxTime = moment(this.maxTime, `h:mm${this.secondsFormat ? this.secondsFormat : ''} a`)
           const maxTimeHour = parseInt(maxTime.format('h'), 10) + (this.apm.toUpperCase() === 'PM' ? 12 : 0)
           maxEnabledSecond = maxTimeHour === this.hour ? parseInt(maxTime.format('ss'), 10) : maxEnabledSecond
         }
       } else {
         if (this.minTime) {
-          const minTime = moment(this.minTime, 'HH:mm:ss')
-          const minTimeHour = parseInt(moment(this.minTime, 'HH:mm:ss').format('HH'), 10)
+          const minTime = moment(this.minTime, `HH:mm${this.secondsFormat ? this.secondsFormat : ''}`)
+          const minTimeHour = parseInt(moment(this.minTime, `HH:mm${this.secondsFormat ? this.secondsFormat : ''}`).format('HH'), 10)
           minEnabledSecond = minTimeHour === this.hour ? parseInt(minTime.format('ss'), 10) : minEnabledSecond
         } else if (this.maxTime) {
-          const maxTime = moment(this.maxTime, 'HH:mm:ss')
-          const maxTimeHour = parseInt(moment(this.maxTime, 'HH:mm:ss').format('HH'), 10)
+          const maxTime = moment(this.maxTime, `HH:mm${this.secondsFormat ? this.secondsFormat : ''}`)
+          const maxTimeHour = parseInt(moment(this.maxTime, `HH:mm${this.secondsFormat ? this.secondsFormat : ''}`).format('HH'), 10)
           maxEnabledSecond = maxTimeHour === this.hour ? parseInt(maxTime.format('ss'), 10) : maxEnabledSecond
         }
       }
@@ -437,9 +438,11 @@ export default {
       }
     },
     async initPositionView () {
-      console.log('initing position view')
       this.noScrollEvent = true
-      const containers = ['hours', 'minutes', 'seconds']
+      const containers = ['hours', 'minutes']
+      if (this.secondsFormat) {
+        containers.push('seconds')
+      }
       if (this.apms) containers.push('apms')
 
       await this.$nextTick()
@@ -490,7 +493,7 @@ export default {
       hour = (hour < 10 ? '0' : '') + hour
       const minute = this.minute ? (this.minute < 10 ? '0' : '') + this.minute : '00'
       const second = this.second ? (this.second < 10 ? '0' : '') + this.second : '00'
-      const time = `${hour}:${minute}:${second}`
+      const time = this.secondsFormat ? `${hour}:${minute}:${second}` : `${hour}:${minute}`
       this.$emit('input', time)
     }
   }

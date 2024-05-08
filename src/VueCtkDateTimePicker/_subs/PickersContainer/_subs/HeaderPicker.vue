@@ -51,8 +51,9 @@
             {{ hour }}
           </span>
         </TransitionGroup>
-        <span>:</span>
+        <span v-if="secondsFormat">:</span>
         <TransitionGroup
+          v-if="secondsFormat"
           :name="transitionName"
           class="dots-text time-number header-picker-minute flex justify-content-left"
         >
@@ -131,7 +132,8 @@ export default {
     timeFormat: { type: String, default: null },
     noTime: { type: Boolean, default: null },
     range: { type: Boolean, default: null },
-    dark: { type: Boolean, default: null }
+    dark: { type: Boolean, default: null },
+    secondsFormat: { type: String, default: null }
   },
   computed: {
     bgStyle () {
@@ -144,9 +146,9 @@ export default {
       const date = this.value
         ? this.range
           ? (this.value.end || this.value.start)
-            ? moment(this.value.end ? this.value.end : this.value.start, 'YYYY-MM-DD HH:mm:ss')
+            ? moment(this.value.end ? this.value.end : this.value.start, `YYYY-MM-DD HH:mm${this.secondsFormat ? this.secondsFormat : ''}`)
             : moment()
-          : moment(this.value, 'YYYY-MM-DD HH:mm:ss')
+          : moment(this.value, `YYYY-MM-DD HH:mm${this.secondsFormat ? this.secondsFormat : ''}`)
         : moment()
       return date
     },

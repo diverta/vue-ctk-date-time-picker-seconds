@@ -74,6 +74,7 @@
             :min-time="minTime"
             :max-time="maxTime"
             :behaviour="behaviour"
+            :seconds-format="secondsFormat"
           />
         </div>
         <ButtonValidate
@@ -143,7 +144,8 @@ export default {
     customShortcuts: { type: Array, default: null },
     noKeyboard: { type: Boolean, default: false },
     right: { type: Boolean, default: false },
-    behaviour: { type: Object, default: () => ({}) }
+    behaviour: { type: Object, default: () => ({}) },
+    secondsFormat: { type: String, default: '' }
   },
   data () {
     return {
@@ -206,13 +208,12 @@ export default {
       },
       get () {
         return this.value
-          ? moment(this.value, 'YYYY-MM-DD HH:mm:ss').format('HH:mm:ss')
+          ? moment(this.value, `YYYY-MM-DD HH:mm${this.secondsFormat ? this.secondsFormat : ''}`).format(`HH:mm${this.secondsFormat ? this.secondsFormat : ''}`)
           : null
       }
     },
     date: {
       set (value) {
-        console.log('emitting value : ' + value)
         this.emitValue({
           value: value,
           type: 'date'
@@ -225,7 +226,7 @@ export default {
             : this.range
               ? { start: this.value.start ? moment(this.value.start).format('YYYY-MM-DD') : null,
                   end: this.value.end ? moment(this.value.end).format('YYYY-MM-DD') : null }
-              : moment(this.value, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD')
+              : moment(this.value, `YYYY-MM-DD HH:mm${this.secondsFormat ? this.secondsFormat : ''}`).format('YYYY-MM-DD')
           : this.range
             ? { start: null, end: null }
             : null
@@ -275,15 +276,14 @@ export default {
       }
     },
     getDateTime ({ value, type }) {
-      console.log('getting time ' + value)
       return this.onlyTime
         ? `${moment().format('YYYY-MM-DD')} ${value}`
         : type === 'date'
-          ? this.time ? `${value} ${this.time}` : `${value} ${moment().format('HH:mm:ss')}`
+          ? this.time ? `${value} ${this.time}` : `${value} ${moment().format(`HH:mm${this.secondsFormat ? this.secondsFormat : ''}`)}`
           : this.date ? `${this.date} ${value}` : `${moment().format('YYYY-MM-DD')} ${value}`
     },
     getTransitionName (date) {
-      const isBigger = moment(date) > moment(`${this.date || moment().format('YYYY-MM-DD')} ${this.time || moment().format('HH:mm:ss')}`)
+      const isBigger = moment(date) > moment(`${this.date || moment().format('YYYY-MM-DD')} ${this.time || moment().format(`HH:mm${this.secondsFormat ? this.secondsFormat : ''}`)}`)
       this.transitionName = isBigger ? 'slidevnext' : 'slidevprev'
     },
     getDateFormat () {

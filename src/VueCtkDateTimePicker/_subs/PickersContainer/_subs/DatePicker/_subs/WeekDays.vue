@@ -14,13 +14,13 @@
 </template>
 
 <script>
-  export default {
-    name: 'WeekDays',
-    props: {
-      weekDays: { type: Array, default: () => ([]), required: true },
-      dark: { type: Boolean, default: null }
-    }
+export default {
+  name: 'WeekDays',
+  props: {
+    weekDays: { type: Array, default: () => ([]), required: true },
+    dark: { type: Boolean, default: null }
   }
+}
 </script>
 
 <style lang="scss" scoped>

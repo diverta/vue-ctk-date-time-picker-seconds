@@ -74,6 +74,7 @@
                 :format="'YYYY-MM-DD HH:mm'"
                 :min-date="'2018-04-05 12:15'"
                 :max-date="'2018-04-24 18:45'"
+                :use-seconds="true"
               />
             </div>
           </div>
@@ -221,6 +222,7 @@
                 :disabled-weekly="demo.options.disabledWeekly"
                 :right="demo.options.right"
                 :no-clear-button="demo.options.noClearButton"
+                :use-seconds="demo.options.useSeconds"
               >
                 <input
                   v-if="demo.options && demo.options.slot && demo.options.slot.type === 'input'"
@@ -280,7 +282,8 @@ export default {
             format: 'YYYY-MM-DD HH:mm:ss',
             id: 'DateTimePicker',
             minDate: '2018-04-05',
-            maxDate: '2018-04-24'
+            maxDate: '2018-04-24',
+            useSeconds: true
           }
         },
         {
