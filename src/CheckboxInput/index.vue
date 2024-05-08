@@ -21,26 +21,26 @@
 </template>
 
 <script>
-  export default {
-    name: 'CheckboxInput',
-    props: {
-      value: {
-        type: Boolean,
-        default: Boolean,
-        required: true
-      },
-      id: {
-        type: String,
-        default: String,
-        required: true
-      },
-      disabled: {
-        type: Boolean,
-        default: Boolean,
-        required: true
-      }
+export default {
+  name: 'CheckboxInput',
+  props: {
+    value: {
+      type: Boolean,
+      default: Boolean,
+      required: true
+    },
+    id: {
+      type: String,
+      default: String,
+      required: true
+    },
+    disabled: {
+      type: Boolean,
+      default: Boolean,
+      required: true
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

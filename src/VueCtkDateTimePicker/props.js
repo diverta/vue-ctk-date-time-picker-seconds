@@ -15,6 +15,7 @@ export default {
   locale: { type: String, default: getDefaultLocale() },
   formatted: { type: String, default: 'llll' },
   format: { type: String, default: 'YYYY-MM-DD hh:mm a' },
+  useSeconds: { type: Boolean, default: false },
   outputFormat: { type: String, default: null },
   minuteInterval: { type: [String, Number], default: 1 },
   minDate: { type: String, default: null },
