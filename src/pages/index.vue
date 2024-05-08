@@ -10,16 +10,16 @@
 </template>
 
 <script>
-  import VueCtkDateTimePicker from './../VueCtkDateTimePicker'
+import VueCtkDateTimePicker from './../VueCtkDateTimePicker'
 
-  export default {
-    components: {
-      VueCtkDateTimePicker
-    },
-    data () {
-      return {
-        date: null
-      }
+export default {
+  components: {
+    VueCtkDateTimePicker
+  },
+  data () {
+    return {
+      date: null
     }
   }
+}
 </script>

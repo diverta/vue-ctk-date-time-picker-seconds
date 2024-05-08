@@ -54,58 +54,58 @@
 </template>
 
 <script>
-  import CustomButton from './../CustomButton'
+import CustomButton from './../CustomButton'
 
-  export default {
-    name: 'CustomInput',
-    components: {
-      CustomButton
+export default {
+  name: 'CustomInput',
+  components: {
+    CustomButton
+  },
+  inheritAttrs: false,
+  props: {
+    isFocus: { type: Boolean, default: false },
+    value: { type: [String, Object], required: false, default: null },
+    label: { type: String, default: 'Select date & time' },
+    noLabel: { type: Boolean, default: false },
+    hint: { type: String, default: null },
+    errorHint: { type: Boolean, default: null },
+    color: { type: String, default: null },
+    dark: { type: Boolean, default: false },
+    inputSize: { type: String, default: null },
+    noClearButton: { type: Boolean, default: false }
+  },
+  computed: {
+    borderStyle () {
+      const cond = (this.isFocus && !this.errorHint)
+      return cond
+        ? { border: `1px solid ${this.color}` }
+        : null
     },
-    inheritAttrs: false,
-    props: {
-      isFocus: { type: Boolean, default: false },
-      value: { type: [String, Object], required: false, default: null },
-      label: { type: String, default: 'Select date & time' },
-      noLabel: { type: Boolean, default: false },
-      hint: { type: String, default: null },
-      errorHint: { type: Boolean, default: null },
-      color: { type: String, default: null },
-      dark: { type: Boolean, default: false },
-      inputSize: { type: String, default: null },
-      noClearButton: { type: Boolean, default: false }
+    colorStyle () {
+      const cond = this.isFocus
+      return cond
+        ? { color: `${this.color}` }
+        : null
     },
-    computed: {
-      borderStyle () {
-        const cond = (this.isFocus && !this.errorHint)
-        return cond
-          ? { border: `1px solid ${this.color}` }
-          : null
-      },
-      colorStyle () {
-        const cond = this.isFocus
-        return cond
-          ? { color: `${this.color}` }
-          : null
-      },
-      hasClearButton () {
-        return !this.noClearButton && !this.isDisabled && this.value
-      },
-      /**
-       * Returns true if the field is disabled
-       * @function isDisabled
-       * @returns {boolean}
-       */
-      isDisabled () {
-        return typeof this.$attrs.disabled !== 'undefined' && this.$attrs.disabled !== false
-      }
+    hasClearButton () {
+      return !this.noClearButton && !this.isDisabled && this.value
     },
-    methods: {
-      focusInput () {
-        this.$refs.CustomInput.focus()
-        this.$emit('focus')
-      }
+    /**
+     * Returns true if the field is disabled
+     * @function isDisabled
+     * @returns {boolean}
+     */
+    isDisabled () {
+      return typeof this.$attrs.disabled !== 'undefined' && this.$attrs.disabled !== false
+    }
+  },
+  methods: {
+    focusInput () {
+      this.$refs.CustomInput.focus()
+      this.$emit('focus')
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>

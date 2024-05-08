@@ -36,7 +36,7 @@ module.exports = {
   },
 
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: '@babel/eslint-parser'
   },
 
   overrides: [
@@ -44,7 +44,6 @@ module.exports = {
       files: ['*.vue'],
       rules: {
         indent: 'off',
-        'vue/script-indent': ['error', 2, { baseIndent: 1 }],
         'vue/component-name-in-template-casing': ['error', 'PascalCase']
       }
     }
