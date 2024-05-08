@@ -2,6 +2,7 @@
   <Transition
     :name="position === 'bottom' ? 'slide' : 'slideinvert'"
   >
+    testtesttest
     <div
       v-show="visible || inline"
       :class="{'inline': inline, 'is-dark': dark, 'visible': visible}"
@@ -14,6 +15,8 @@
         class="datepicker flex flex-direction-column"
         :class="{ 'right': right }"
       >
+        testtesttest
+
         <HeaderPicker
           v-if="!noHeader"
           :key="componentKey"
