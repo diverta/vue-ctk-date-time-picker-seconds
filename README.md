@@ -1,5 +1,5 @@
 <!-- ![vue-ctk-date-time-picker](./assets/logo_sticky.png) -->
-
+5/17 7:32
 # VueCtkDateTimePicker
 
 > A vue component for select dates (range mode available) & time
