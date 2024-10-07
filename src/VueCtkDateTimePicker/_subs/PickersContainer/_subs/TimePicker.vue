@@ -16,6 +16,9 @@
         : column.type === 'hours' ? onScrollHours($event) : column.type === 'minutes' ? onScrollMinutes($event) : column.type === 'seconds' ? onScrollSeconds($event) : onScrollApms($event)
       "
     >
+      <div class="arrow-btn top-0">
+        <v-b-arrow-button  type="up" :color=color @click="handlePrevClick(column.type)"/> 
+      </div>
       <div>
         <div
           class="before"
@@ -46,11 +49,15 @@
           :style="[columnPadding]"
         />
       </div>
+      <div class="arrow-btn bottom-0">
+        <v-b-arrow-button type="down" @click="handleNextClick(column.type)"/> 
+      </div>
     </div>
   </div>
 </template>
 <script>
 import moment from 'moment'
+import VBArrowButton from "@/components/arrow_button"
 
 const ArrayHourRange = (start, end, twoDigit, isAfternoon, disabledHours, isTwelveFormat) => {
   return Array(end - start + 1).fill().map((_, idx) => {
@@ -104,6 +111,9 @@ const debounce = (fn, time) => {
 
 export default {
   name: 'TimePicker',
+  components: {
+    VBArrowButton,
+  },
   props: {
     value: { type: String, default: null },
     format: { type: String, default: null },
@@ -334,9 +344,25 @@ export default {
     this.initPositionView()
   },
   methods: {
+    handlePrevClick(type) {
+      if(this[type.slice(0, -1)] !== 0) {
+        this[type.slice(0, -1)]--; 
+      }
+      this.emitValue();
+    },  
+    handleNextClick(type) {
+      if(type === 'hours' && this.hour < 23) {
+        this.hour++;
+      } else if(type === 'minutes' && this.minute < 59) {
+        this.minute++;
+      } else if(type === 'seconds' && this.second < 59) {
+        this.second++;
+      }
+      this.emitValue();
+    },  
     getValue (scroll) {
       const itemHeight = 28
-      const scrollTop = scroll.target.scrollTop
+      const scrollTop = scroll.target.scrollTop -  18 // Remove arrow button height.
       return Math.round(scrollTop / itemHeight)
     },
     onScrollHours: debounce(function (scroll) {
@@ -501,6 +527,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .arrow-btn {
+    position: sticky;
+    background-color:white;
+    z-index: 1;
+    text-align: center;
+  }
+
   .time-picker-column::-webkit-scrollbar {
     display: none;
   }
